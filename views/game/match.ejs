@@ -1,0 +1,16 @@
+<%= game %>
+
+
+<% if(game.startedAt == null) { %>
+<form action="/game/chooseNumber" method="post">
+    <input type="text" name="userNumber" placeholder="choose number" />
+    <input type="hidden" name="userName" value="<%= user.userName%>" />
+    <input type="hidden" name="user1Name" value="<%= game.user1Name%>" />
+    <input type="hidden" name="user2Name" value="<%= game.user2Name%>" />
+
+    <input type="hidden" name="UserId" value="<%= user._id%>" />
+
+    <input type="hidden" name="GameId" value="<%= game._id%>" />
+    <input class="btn btn-primary" type="submit" value="submit" />
+</form>
+<% } %>

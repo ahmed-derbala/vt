@@ -1,0 +1,43 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/invitation_style.css" />
+</head>
+<div class="container invitation-form max-width">
+  <form action="/invitation/create" method="POST">
+    <div class="card">
+      <div class="card-header">
+        <h1>Inviter un nouveau membre</h1>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Email:
+        </p>
+        <input
+          type="email"
+          name="email"
+          id="contactemail"
+          class="invitation-input"
+          placeholder="Email"
+        />
+        <p class="card-text">
+          Rôle:
+        </p>
+        <select
+          name="targetRole"
+          id="targetRole"
+          class="invitation-input"
+          placeholder="SUPER, ADMIN, USER"
+          maxlength="100"
+        >
+          <option value="SUPER">Super Administrateur</option>
+          <option value="ADMIN">Administrateur</option>
+          <option value="USER">Utilisateur</option>
+        </select>
+        <input
+          type="submit"
+          value="Send"
+          class="btn btn-reverse invitation-submit"
+        />
+      </div>
+    </div>
+  </form>
+</div>

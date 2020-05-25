@@ -1,0 +1,152 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/card_style.css" />
+  <script>
+    function copyFunction() {
+      var copyText = document.getElementById('reportLink');
+
+      //alert(copyText.value)
+      /* Get the text field */
+
+      /* Select the text field */
+      copyText.select();
+      //copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+      /* Copy the text inside the text field */
+      document.execCommand('copy');
+
+      /* Alert the copied text */
+      alert('Copied: ' + copyText.value);
+    }
+    // </h4>
+  </script>
+</head>
+<% if(message != null) { %>
+<script>
+  alert('<%= message %>');
+</script>
+<% } %>
+
+<section id="reports" class="max-width">
+  <% if(reports.length>0){%> <% for(let i =0; i < reports.length; i++){ if (reports[i].gameId != null) {%>
+
+  <div class="card">
+    <div class="row no-gutters">
+      <div class="col-md-4 d-flex align-items-center card-user-infos">
+        <img src="/game/id/<%= reports[i].gameId._id %>/picture" class="card-img" alt="proposition" />
+        <div class="mb-3 mt-2">
+          <h5 class="card-user-infos-name"><%= reports[i].gameId.name %></h5>
+          <small class="card-muted-text text-muted">
+            <%= reports[i].gameId.creatorKind %></small>
+        </div>
+        <button class="card-user-infos-button" data-toggle="collapse" data-target="#collapseExample<%= i %>"
+          aria-expanded="false" aria-controls="collapseExample<%= i %>">
+          Afficher les coordonnées
+        </button>
+        <div class="collapse" id="collapseExample<%= i %>">
+          <div class="card-user-contact">
+            <i class="fas fa-phone"></i>
+            <span><%= reports[i].gameId.phone %></span>
+          </div>
+          <div class="card-user-contact">
+            <i class="far fa-envelope"></i>
+            <a href="mailto:<%= reports[i].gameId.email %>"><%= reports[i].gameId.email %></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body p-0 d-flex justify-content-between">
+          <div class="card-body-main">
+            <h4 class="card-body-title"><%= reports[i].gameId.title %></h4>
+            <div class="card-body-infos d-flex justify-content-between align-items-center">
+              <span class="text-muted card-service-type"><%= reports[i].gameId.type %></span>
+              <span class="text-muted card-muted-text">publié le: <%=
+              moment(reports[i].gameId.createdAt).locale("fr").format(shortDateFormat)
+              %></span>
+            </div>
+            <div class="d-flex align-items-center flex-wrap card-regions">
+              <i class="fas fa-map-marker-alt"></i>
+              <% if(reports[i].gameId.allRegions) { %>
+              <span class="card-region">Toute la Tunisie</span>
+              <%} else { for(var region of reports[i].gameId.regions){%>
+              <span class="card-region"><%= region %></span>
+              <% } %><% } %>
+            </div>
+            <% if(reports[i].gameId.url) { %>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-globe"></i>
+              <a class="card-body-link" href="<%= reports[i].gameId.url %>"
+                target="_blank"><%= reports[i].gameId.url %></a>
+            </div>
+            <% } %>
+
+            <div>
+              <% if(reports[i].gameId.service) { %>
+              <h5 class="card-donation">
+                Service:<span> <%= reports[i].gameId.service %></span>
+              </h5>
+              <% } else { %>
+              <h5 class="card-donation">
+                Don:<span>
+                  <%= reports[i].gameId.equipmentCount %> <%=
+                  reports[i].gameId.equipment %>(s)</span>
+              </h5>
+              <% } %>
+              <p class="card-body-text card-description">
+                <%= reports[i].gameId.description.slice(0,200) %>
+              </p>
+            </div>
+            <% if(reports[i].gameId.description.slice(0,200).length <
+            reports[i].gameId.description.length) { %>
+            <span class="card-body-link see-more"
+              onClick='toggle(`<%= reports[i].gameId.description %>`,"<%= i %>")'>Voir plus</span>
+            <% } %>
+            <h5 class="card-donation">
+              Raison
+            </h5>
+            <p class="card-body-text card-description card-reason">
+              <%= reports[i].reason %>
+            </p>
+          </div>
+          <div class="d-flex justify-content-between flex-wrap align-items-center card-body-footer">
+            <div class="card-body-keywords">
+              <% for(var keyword of reports[i].gameId.keywords.split(';')){%>
+              <span>#<%= keyword %></span>
+              <% } %>
+            </div>
+
+            <div class="d-flex justify-content-center flex-wrap ml-auto">
+              <form action="/game/delete" method="POST">
+                <input type="hidden" name="id" id="id"  value=<%= reports[i].gameId._id %>>
+                <input type="submit" value="Supprimer proposition" class="card-body-btn delete" />
+              </form>
+
+              <% if (connectedUser && connectedUser.clearance.level >600){%>
+              <form action="/report/delete" method="POST">
+                <input type="hidden" name="id" id="id"  value=<%= reports[i]._id %>>
+                <input type="submit" value="Supprimer rapport" class="card-body-btn delete" />
+              </form>
+
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }} %>
+  <div style="text-align:center">
+    <div class="pagination">
+      <% for( var page=1;page<=totalPages;page++) { %>
+      <a href="/report/page/?page=<%= page %>"><%= page %></a>
+      <% } %>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="no-data d-flex align-items-center justify-content-center flex-column">
+    <img class="no-data-img" src="/img/no-data-yet_2x.png" alt="no-dat" />
+    <p class="no-data-text">
+      Il n'y a pas d'activité à signaler pour le moment, revenez plus tard.
+    </p>
+  </div>
+  <% } %>
+</section>

@@ -1,0 +1,15 @@
+<% if(user != null) { %>
+
+<h1>HI, <%= user.userName %></h1>
+available players: <br>
+<% for(let room of rooms){%>
+<a href="/game/match?user1Name=<%=user.userName %>&user2Name=<%= room %>">
+  <button><%= room %></button>
+</a>
+
+<% } %>
+
+<% } else { %>
+<h1>you may want to
+  <a href="/user/signin">signin</a> </h1>
+<% } %>

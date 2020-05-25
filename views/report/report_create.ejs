@@ -1,0 +1,37 @@
+
+  <head>
+  <link rel="stylesheet" href="/stylesheets/report_style.css" />
+  <script src="http://code.jquery.com/jquery.js"></script>
+<script>
+  function a(){      alert('success')
+    }
+  </script>
+</head>
+<div class="container report-form max-width">
+  <form action="/report/create" method="POST">
+    <div class="card">
+      <div class="card-header">
+        <h1>Signaler une proposition</h1>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Quel est le motif de cette action</h5>
+        <p class="card-text">
+          Vous pouvez signaler la proposition après avoir donné une raison.
+        </p>
+        <textarea
+          name="reason"
+          id="reason"
+          class="report-input"
+          placeholder="Décrivez les détails du problème"
+          rows="5"
+          maxlength="700"
+          required
+        ></textarea>
+        <input type="hidden" name="gameId" id="gameId" 
+        value=<%= data.id %>>
+
+        <input type="submit" value="Send" class="btn btn-reverse report-submit" onClick=a()/>
+      </div>
+    </div>
+  </form>
+</div>
